@@ -2,8 +2,9 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/master/.oh-my-zsh"
-export DEFAULT_USER="master"
+export PATH=/opt/homebrew/bin:$PATH
+export ZSH="/Users/erikarens/.oh-my-zsh"
+export DEFAULT_USER="erikarens"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -11,7 +12,10 @@ export DEFAULT_USER="master"
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
 
-plugins=(git macos)
+plugins=(
+  git macos
+  zsh-autosuggestions
+  )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -57,3 +61,6 @@ function up() {
     cd $git_dir
   fi
 }
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
