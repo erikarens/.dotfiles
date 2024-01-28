@@ -31,13 +31,12 @@ alias o="open ."
 alias ll="ls -la -G"
 alias g="git"
 alias gp="git pull"
+alias gl="git log --oneline"
 alias gundo="git reset --soft HEAD~"
 alias gamend="git commit -av --amend --no-edit"
-alias zshconfig="a ~/.zshrc"
+alias zshconfig="open ~/.zshrc"
 alias install="brew install"
 alias uninstall="brew uninstall"
-
-alias c='pygmentize -O style=monokai -f console256 -g'
 
 # FUNCTIONS
 
@@ -62,17 +61,24 @@ function up() {
   fi
 }
 
-#Loads rbenv automatically
+#Loads rbenv automatically - Ruby Version Manager
 eval "$(rbenv init - zsh)"
 
-#Android Build Stuff
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-
+# Loads NVM - Node Version Manager
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 # Load Angular CLI autocompletion.
 source <(ng completion script)
+
+# Android SDK Terminal Support
+export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
+
+#Android Build Stuff
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
