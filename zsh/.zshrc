@@ -61,7 +61,7 @@ function up() {
   fi
 }
 
-#Loads rbenv automatically - Ruby Version Manager
+# Loads rbenv automatically - Ruby Version Manager
 eval "$(rbenv init - zsh)"
 
 # Loads NVM - Node Version Manager
@@ -78,7 +78,15 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
 
-#Android Build Stuff
+# Android Build Stuff
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+# Pipx - Ensure directories necessary for pipx operation are in your PATH environment variable. 
+export PATH="$PATH:/Users/erikarens/.local/bin"
+
+# Pipx - autocompletion setup
+autoload -U compinit
+compinit
+eval "$(register-python-argcomplete pipx)"
