@@ -1,0 +1,46 @@
+{
+  "editor.accessibilitySupport": "off",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "editor.guides.bracketPairs": "active",
+  "editor.formatOnSave": true,
+  "editor.fontWeight": "600",
+  "editor.fontSize": 14,
+  "terminal.integrated.fontFamily": "Source Code Pro for Powerline",
+  "prettier.printWidth": 140,
+  "prettier.singleQuote": true,
+  "prettier.requireConfig": true,
+  "material-icon-theme.folders.color": "#fdd835",
+  "material-icon-theme.folders.theme": "none",
+  "gitlens.hovers.currentLine.over": "line",
+  "explorer.confirmDragAndDrop": false,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "GitHub Light",
+  "application.shellEnvironmentResolutionTimeout": 60,
+  "git.openRepositoryInParentFolders": "never",
+  "security.workspace.trust.untrustedFiles": "open",
+  "extensions.ignoreRecommendations": true,
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[csharp]": {
+    "editor.defaultFormatter": "csharpier.csharpier-vscode"
+  },
+  // Vim specific settings
+  "editor.lineNumbers": "relative",
+  "vim.leader": "space"
+}

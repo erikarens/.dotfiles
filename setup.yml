@@ -1,0 +1,151 @@
+---
+- name: Set up development environment
+  hosts: localhost
+  become: no
+  tasks:
+
+    # Ensure Homebrew is installed
+    - name: Check if Homebrew is installed
+      command: brew --version
+      register: brew_installed
+      ignore_errors: yes
+
+    - name: Install Homebrew
+      shell: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      when: brew_installed is failed
+
+    # Ensure Git is installed (should already be installed, otherwise you would not already have this repo)
+    - name: Check if Git is installed
+      command: git --version
+      register: git_installed
+      ignore_errors: yes
+
+    - name: Install Git
+      homebrew:
+        name: git
+        state: present
+      when: git_installed is failed
+
+    # Ensure Zsh is installed
+    - name: Check if Zsh is installed
+      command: zsh --version
+      register: zsh_installed
+      ignore_errors: yes
+
+    - name: Install Zsh
+      homebrew:
+        name: zsh
+        state: present
+      when: zsh_installed is failed
+
+    # Ensure iTerm2 is installed
+    - name: Check if iTerm2 is installed
+      command: ls /Applications/iTerm.app
+      register: iterm2_installed
+      ignore_errors: yes
+
+    - name: Install iTerm2
+      homebrew_cask:
+        name: iterm2
+        state: present
+      when: iterm2_installed is failed
+
+    # Ensure Visual Studio Code is installed
+    - name: Check if Visual Studio Code is installed
+      command: ls /Applications/Visual\ Studio\ Code.app
+      register: vscode_installed
+      ignore_errors: yes
+
+    - name: Install Visual Studio Code
+      homebrew_cask:
+        name: visual-studio-code
+        state: present
+      when: vscode_installed is failed
+
+    # Symlink VSCode settings.json (MacOS only)
+    - name: Check if VSCode settings.json exists and is not a symlink
+      stat:
+        path: ~/Library/Application\ Support/Code/User/settings.json
+      register: vscode_settings_file
+
+    - name: Remove default VSCode settings.json if it exists
+      file:
+        path: ~/Library/Application\ Support/Code/User/settings.json
+        state: absent
+      when: vscode_settings_file.stat.exists and not vscode_settings_file.stat.islnk
+
+    - name: Symlink VSCode settings.json
+      file:
+        src: ~/.dotfiles/vscode/settings.json
+        dest: ~/Library/Application\ Support/Code/User/settings.json
+        state: link
+      when: not vscode_settings_file.stat.exists or not vscode_settings_file.stat.islnk
+
+    # Symlink VSCode keybindings.json (MacOS only)
+    - name: Check if VSCode keybindings.json exists and is not a symlink
+      stat:
+        path: ~/Library/Application\ Support/Code/User/keybindings.json
+      register: vscode_keybindings_file
+
+    - name: Remove default VSCode keybindings.json if it exists
+      file:
+        path: ~/Library/Application\ Support/Code/User/keybindings.json
+        state: absent
+      when: vscode_keybindings_file.stat.exists and not vscode_keybindings_file.stat.islnk
+
+    - name: Symlink VSCode keybindings.json
+      file:
+        src: ~/.dotfiles/vscode/keybindings.json
+        dest: ~/Library/Application\ Support/Code/User/keybindings.json
+        state: link
+      when: not vscode_keybindings_file.stat.exists or not vscode_keybindings_file.stat.islnk
+
+    # Symlink .zshrc
+    - name: Check if .zshrc symlink exists
+      stat:
+        path: ~/.zshrc
+      register: zshrc_link
+
+    - name: Symlink .zshrc
+      file:
+        src: ~/.dotfiles/zsh/.zshrc
+        dest: ~/.zshrc
+        state: link
+      when: not zshrc_link.stat.exists
+      
+    # Symlink .gitconfig
+    - name: Check if .gitconfig exists and is not a symlink
+      stat:
+        path: ~/.gitconfig
+      register: gitconfig_file
+
+    - name: Remove existing .gitconfig if it's not a symlink
+      file:
+        path: ~/.gitconfig
+        state: absent
+      when: gitconfig_file.stat.exists and not gitconfig_file.stat.islnk
+
+    - name: Symlink .gitconfig
+      file:
+        src: ~/.dotfiles/work/.gitconfig
+        dest: ~/.gitconfig
+        state: link
+        force: yes
+      when: not gitconfig_file.stat.exists or not gitconfig_file.stat.islnk
+
+    # Decrypt and set up SSH keys
+    - name: Decrypt SSH keys
+      command: ansible-vault decrypt ~/.dotfiles/personal/.ssh-keys/*
+      args:
+        removes: ~/.dotfiles/personal/.ssh-keys/*.vault
+
+    - name: Ensure SSH directory exists
+      file:
+        path: ~/.ssh
+        state: directory
+
+    - name: Move SSH keys
+      command: mv ~/.dotfiles/personal/.ssh-keys/* ~/.ssh/
+      args:
+        removes: ~/.dotfiles/personal/.ssh-keys/*
