@@ -66,39 +66,41 @@
     # Symlink VSCode settings.json (MacOS only)
     - name: Check if VSCode settings.json exists and is not a symlink
       stat:
-        path: ~/Library/Application\ Support/Code/User/settings.json
+        path: ~/Library/Application Support/Code/User/settings.json
       register: vscode_settings_file
 
     - name: Remove default VSCode settings.json if it exists
       file:
-        path: ~/Library/Application\ Support/Code/User/settings.json
+        path: ~/Library/Application Support/Code/User/settings.json
         state: absent
       when: vscode_settings_file.stat.exists and not vscode_settings_file.stat.islnk
 
     - name: Symlink VSCode settings.json
       file:
         src: ~/.dotfiles/vscode/settings.json
-        dest: ~/Library/Application\ Support/Code/User/settings.json
+        dest: ~/Library/Application Support/Code/User/settings.json
         state: link
+        force: true
       when: not vscode_settings_file.stat.exists or not vscode_settings_file.stat.islnk
 
     # Symlink VSCode keybindings.json (MacOS only)
     - name: Check if VSCode keybindings.json exists and is not a symlink
       stat:
-        path: ~/Library/Application\ Support/Code/User/keybindings.json
+        path: ~/Library/Application Support/Code/User/keybindings.json
       register: vscode_keybindings_file
 
     - name: Remove default VSCode keybindings.json if it exists
       file:
-        path: ~/Library/Application\ Support/Code/User/keybindings.json
+        path: ~/Library/Application Support/Code/User/keybindings.json
         state: absent
       when: vscode_keybindings_file.stat.exists and not vscode_keybindings_file.stat.islnk
 
     - name: Symlink VSCode keybindings.json
       file:
         src: ~/.dotfiles/vscode/keybindings.json
-        dest: ~/Library/Application\ Support/Code/User/keybindings.json
+        dest: ~/Library/Application Support/Code/User/keybindings.json
         state: link
+        force: true
       when: not vscode_keybindings_file.stat.exists or not vscode_keybindings_file.stat.islnk
 
     # Symlink .zshrc
@@ -136,9 +138,11 @@
 
     # Decrypt and set up SSH keys
     - name: Decrypt SSH keys
-      command: ansible-vault decrypt ~/.dotfiles/personal/.ssh-keys/*
+      shell: ansible-vault decrypt {{ item }}
+      with_fileglob:
+        - ~/.dotfiles/personal/.ssh-keys/*
       args:
-        removes: ~/.dotfiles/personal/.ssh-keys/*.vault
+        removes: ~/.dotfiles/personal/.ssh-keys/*
 
     - name: Ensure SSH directory exists
       file:
@@ -146,6 +150,6 @@
         state: directory
 
     - name: Move SSH keys
-      command: mv ~/.dotfiles/personal/.ssh-keys/* ~/.ssh/
+      shell: mv ~/.dotfiles/personal/.ssh-keys/* ~/.ssh/
       args:
         removes: ~/.dotfiles/personal/.ssh-keys/*
