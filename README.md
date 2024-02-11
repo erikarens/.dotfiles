@@ -4,6 +4,8 @@
 
 This `.dotfiles` repository is a centralized collection of configuration files (dotfiles) and scripts for automating the setup of a development environment. It's designed to facilitate a quick and consistent configuration of tools like Zsh, Git, and Visual Studio Code across multiple machines.
 
+All configuration files are added to the machine with symlinks so that every change you make is automatically recognized as a change in the repository and you can save it via push.
+
 ## Features
 
 - Automated setup for essential tools like Git, Zsh, iTerm2, and Visual Studio Code using Ansible.
