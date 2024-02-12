@@ -40,6 +40,14 @@ alias uninstall="brew uninstall"
 
 # FUNCTIONS
 
+function work() {
+  cd ~/Development/Work
+}
+
+function private() {
+  cd ~/Development/Private
+}
+
 function hl (){
     highlight -O rtf "$1" | pbcopy
     echo "code is copied to clipboard"
