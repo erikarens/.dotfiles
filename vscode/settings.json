@@ -47,5 +47,6 @@
   },
   // Vim specific settings
   "editor.lineNumbers": "relative",
-  "vim.leader": "space"
+  "vim.leader": "space",
+  "workbench.startupEditor": "none"
 }
