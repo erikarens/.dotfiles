@@ -136,6 +136,26 @@
         force: yes
       when: not gitconfig_file.stat.exists or not gitconfig_file.stat.islnk
 
+    # Symlink .gitconfig-work
+    - name: Check if .gitconfig exists and is not a symlink
+      stat:
+        path: ~/.gitconfig-work
+      register: gitconfig_work_file
+
+    - name: Remove existing .gitconfig if it's not a symlink
+      file:
+        path: ~/.gitconfig-work
+        state: absent
+      when: gitconfig_work_file.stat.exists and not gitconfig_work_file.stat.islnk
+
+    - name: Symlink .gitconfig-work
+      file:
+        src: ~/.dotfiles/work/.gitconfig-work
+        dest: ~/.gitconfig-work
+        state: link
+        force: yes
+      when: not gitconfig_work_file.stat.exists or not gitconfig_work_file.stat.islnk
+
     # Decrypt and set up SSH keys
     - name: Decrypt SSH keys
       shell: ansible-vault decrypt {{ item }}
