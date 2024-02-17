@@ -69,7 +69,32 @@ function up() {
   fi
 }
 
-# Loads rbenv automatically - Ruby Version Manager
+# Open JetBrains Rider with the solution file in the current directory.
+# If the first argument is '.', it searches for and opens the .sln file in the current directory.
+# If other arguments are provided, it passes them directly to the Rider CLI, allowing
+# the function to be used for other Rider command-line functionalities.
+function rider() {
+    if [[ "$1" == "." ]]; then
+        # Find the .sln file
+	local solution_file=$(find . -maxdepth 1 -name "*.sln" | head -n 1)
+
+
+        # Check if the solution file is found
+        if [ -z "$solution_file" ]; then
+            echo "No .sln file found in the current directory"
+            return 1
+        fi
+
+        # Open the solution file with Rider
+        open -na "Rider.app" --args "$solution_file"
+    else
+	# If any arguments other than '.' are given, pass them directly to the Rider CLI
+        # This allows the function to support other Rider command-line functionalities
+        ropen -na "Rider.app" --args "$@"
+    fi
+}
+
+#Loads rbenv automatically - Ruby Version Manager
 eval "$(rbenv init - zsh)"
 
 # Loads NVM - Node Version Manager
@@ -86,15 +111,18 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
 
-# Android Build Stuff
+#Android Build Stuff
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-# Pipx - Ensure directories necessary for pipx operation are in your PATH environment variable. 
+# Created by `pipx` on 2024-02-10 09:17:35
 export PATH="$PATH:/Users/erikarens/.local/bin"
 
-# Pipx - autocompletion setup
+# Pipx autocompletion setup
 autoload -U compinit
 compinit
 eval "$(register-python-argcomplete pipx)"
+
+# JetBrains Rider
+export PATH="$PATH:/Applications/Rider.app/Contents/MacOS"
