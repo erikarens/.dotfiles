@@ -1,5 +1,15 @@
 // Place your key bindings in this file to override the defaultsauto[]
 [
+    {
+        "key": "shift+cmd+7",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "cmd+/",
+        "command": "-editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    }
     // Vim specific keybindings
     // When the parameterHints and the suggestWidget is visible the escape key no longer goes back to normal mode instead just closes the context-menu.
     // {

@@ -1,9 +1,10 @@
 # How i configured MacOS for an optimal workflow
 ## System Behavior
 ### General stuff
-* Turn Off: `System Settings -> Dektop & Dock -> Mission Control / Automatically rearrange Spaces based on most recent use`
-* Turn On: `System Settings -> Accessibility -> Display -> Reduce motion`
+* Turn off: `System Settings -> Dektop & Dock -> Mission Control / Automatically rearrange Spaces based on most recent use`
+* Turn on: `System Settings -> Accessibility -> Display -> Reduce motion`
 * Turn on shortcuts to switch desktops with `control + number`: `Keyboard -> Keyboard Shortcuts -> Mission Control -> Misson Control -> Switch to Desktop ...`
+* Turn off `control + number`: `Keyboard -> Keyboard Shortcuts -> Mission Control -> Misson Control -> Show Desktop`
 * Change to `Fast`: `System Settings -> Keyboard -> Key repeat rate -> Fast`
 * Change to `Short`: `System Settings -> Keyboard -> Delay until repeat -> Short`
 

@@ -7,7 +7,7 @@
   },
   "editor.guides.bracketPairs": "active",
   "editor.formatOnSave": true,
-  "editor.fontWeight": "600",
+  "editor.fontWeight": "500",
   "editor.fontSize": 14,
   "explorer.confirmDragAndDrop": false,
   "application.shellEnvironmentResolutionTimeout": 60,
@@ -20,17 +20,11 @@
   "prettier.singleQuote": true,
   "prettier.requireConfig": true,
   "gitlens.hovers.currentLine.over": "line",
-  "github.copilot.enable": {
-    "*": true,
-    "plaintext": false,
-    "markdown": false,
-    "scminput": false
-  },
   // UI specific settings
   "material-icon-theme.folders.color": "#fdd835",
   "material-icon-theme.folders.theme": "none",
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "GitHub Light",
+  "workbench.colorTheme": "GitHub Dark Dimmed",
   "extensions.ignoreRecommendations": true,
   // Language specific settings
   "[python]": {
@@ -43,7 +37,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[csharp]": {
-    "editor.defaultFormatter": "csharpier.csharpier-vscode"
+    "editor.defaultFormatter": "ms-dotnettools.csdevkit"
   },
   // Vim specific settings
   "editor.lineNumbers": "relative",
