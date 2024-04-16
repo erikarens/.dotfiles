@@ -42,5 +42,11 @@
   // Vim specific settings
   "editor.lineNumbers": "relative",
   "vim.leader": "space",
-  "workbench.startupEditor": "none"
+  "workbench.startupEditor": "none",
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  }
 }

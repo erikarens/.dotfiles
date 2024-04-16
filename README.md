@@ -65,8 +65,11 @@ After running the playbook, your environment will be set up with the configurati
 ## Additional customizations after the setup
 - Install and activate this powerline-patched font and use it in iTerm2 [Source Code Pro for Powerline](https://github.com/powerline/fonts/tree/master/SourceCodePro) 
 - Install and activate the Halcyon as "color preset" in iTerm" [Halcyon Theme for iTerm](https://github.com/bchiang7/halcyon-iterm)
+- Also configure macos like this [Macos Setup](./MACOS.md)
 
-## Customization
+Recently I realised that I use the pre-installed terminal of MacOS because it is so fast. To get the same look and feel as with iTerm2, I added the profile to this repository under `terminal`.
+
+## Customizatio`
 
 - Customize configurations by modifying the files in the repository.
 - Regularly commit and push changes to keep configurations synchronized across all machines.
