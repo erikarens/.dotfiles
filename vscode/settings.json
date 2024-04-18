@@ -36,6 +36,7 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "omnisharp.organizeImportsOnFormat": true,
   "[csharp]": {
     "editor.defaultFormatter": "ms-dotnettools.csdevkit"
   },

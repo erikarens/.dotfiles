@@ -39,6 +39,17 @@
         state: present
       when: zsh_installed is failed
 
+    # Ensure oh-my-zsh is installed
+    - name: Check if omz is installed
+      command: omz version
+      register: omz_installed
+      ignore_errors: yes
+
+    - name: Install omz
+      shell: |
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      when: omz_installed is failed
+
     # Ensure iTerm2 is installed
     - name: Check if iTerm2 is installed
       command: ls /Applications/iTerm.app
