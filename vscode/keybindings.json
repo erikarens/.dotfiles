@@ -26,8 +26,8 @@
     {
         "key": "ctrl+escape",
         "command": "github.copilot.toggleCopilot"
-    }
-    // Vim specific keybindings
+    },
+        // Vim specific keybindings
     // When the parameterHints and the suggestWidget is visible the escape key no longer goes back to normal mode instead just closes the context-menu.
     // {
     //     "key": "escape",

@@ -49,5 +49,9 @@
     "plaintext": false,
     "markdown": false,
     "scminput": false
+  },
+  // To improve vim extension performance
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1
   }
 }
