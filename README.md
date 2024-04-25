@@ -63,11 +63,12 @@ This script automates the setup process, including the installation of necessary
 After running the playbook, your environment will be set up with the configurations specified in the repository. This includes the setup of tools like Zsh and VSCode, along with the decryption and placement of SSH keys.
 
 ## Additional customizations after the setup
-- Install and activate this powerline-patched nerd font and use it in iTerm2 [Source Code Pro for Powerline](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SourceCodePro.zip) 
-- Install and activate the Halcyon as "color preset" in iTerm" [Halcyon Theme for iTerm](https://github.com/bchiang7/halcyon-iterm)
+- Install and activate this powerline-patched nerd font and use it in iTerm2 [Source Code Pro for Powerline](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SourceCodePro.zip)
+- Install and configure Powerlevel10k as Zsh theme. [Installation guide here](https://github.com/romkatv/powerlevel10k#oh-my-zsh) and [setup video here](https://www.youtube.com/watch?v=CF1tMjvHDRA&ab_channel=JoseanMartinez)
+- Activate the coolnight color preset you can find in `iterm2`
 - Also configure macos like this [Macos Setup](./MACOS.md)
 
-## Customization`
+## Customization
 
 - Customize configurations by modifying the files in the repository.
 - Regularly commit and push changes to keep configurations synchronized across all machines.
