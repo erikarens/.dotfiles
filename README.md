@@ -63,13 +63,11 @@ This script automates the setup process, including the installation of necessary
 After running the playbook, your environment will be set up with the configurations specified in the repository. This includes the setup of tools like Zsh and VSCode, along with the decryption and placement of SSH keys.
 
 ## Additional customizations after the setup
-- Install and activate this powerline-patched font and use it in iTerm2 [Source Code Pro for Powerline](https://github.com/powerline/fonts/tree/master/SourceCodePro) 
+- Install and activate this powerline-patched nerd font and use it in iTerm2 [Source Code Pro for Powerline](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SourceCodePro.zip) 
 - Install and activate the Halcyon as "color preset" in iTerm" [Halcyon Theme for iTerm](https://github.com/bchiang7/halcyon-iterm)
 - Also configure macos like this [Macos Setup](./MACOS.md)
 
-Recently I realised that I use the pre-installed terminal of MacOS because it is so fast. To get the same look and feel as with iTerm2, I added the profile to this repository under `terminal`.
-
-## Customizatio`
+## Customization`
 
 - Customize configurations by modifying the files in the repository.
 - Regularly commit and push changes to keep configurations synchronized across all machines.
@@ -96,3 +94,4 @@ ansible-playbook --check --ask-become-pass --ask-vault-pass setup.yml -vvv
 - [ ] Automate installation of Xcode Command Line Tools via Brew
 - [ ] Automate installation of the .Net Runtime via Brew
 - [ ] Automate installation of the latest Angular CLI
+- [ ] Automate installation and configuration of neovim

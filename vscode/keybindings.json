@@ -10,24 +10,7 @@
         "command": "-editor.action.commentLine",
         "when": "editorTextFocus && !editorReadonly"
     },
-    // GitHub Copilot
-    {
-        "key": "ctrl+f",
-        "command": "github.copilot.interactiveEditor.fix"
-    },
-    {
-        "key": "ctrl+e",
-        "command": "github.copilot.interactiveEditor.explain"
-    },
-    {
-        "key": "ctrl+d",
-        "command": "github.copilot.interactiveEditor.generateDocs"
-    },
-    {
-        "key": "ctrl+escape",
-        "command": "github.copilot.toggleCopilot"
-    },
-        // Vim specific keybindings
+    // Vim specific keybindings
     // When the parameterHints and the suggestWidget is visible the escape key no longer goes back to normal mode instead just closes the context-menu.
     // {
     //     "key": "escape",
