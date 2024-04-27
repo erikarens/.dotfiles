@@ -53,5 +53,6 @@
   // To improve vim extension performance
   "extensions.experimental.affinity": {
     "vscodevim.vim": 1
-  }
+  },
+  "files.autoSave": "afterDelay"
 }
