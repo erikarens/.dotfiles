@@ -14,7 +14,7 @@
   "git.openRepositoryInParentFolders": "never",
   "security.workspace.trust.untrustedFiles": "open",
   // Terminal specific settings
-  "terminal.integrated.fontFamily": "Source Code Pro for Powerline",
+  "terminal.integrated.fontFamily": "SourceCodePro Nerd Font",
   // Extension specific settings
   "prettier.printWidth": 140,
   "prettier.singleQuote": true,

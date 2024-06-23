@@ -8,13 +8,14 @@ All configuration files are added to the machine with symlinks so that every cha
 
 ## Features
 
-- Automated setup for essential tools like Git, Zsh, iTerm2, and Visual Studio Code using Ansible.
+- Automated setup for essential tools like Git, Zsh, iTerm2, Autojump, NeoVim, Tmux and Visual Studio Code using Ansible.
 - Secure management of SSH keys using Ansible Vault.
-- Synchronization of configurations like `.zshrc` and `settings.json` for VSCode.
+- Synchronization of configurations like `.zshrc` and `settings.json` for VSCode via symlinks.
 
 ## Prerequisites
 
 Before using this repository, ensure the following tools are installed:
+
 - **Git**: For cloning the repository.
 - **Ansible**: For running the automation scripts.
 - **GitHub Personal Access Token (PAT)**: Required for cloning the repository via HTTPS. Create a PAT with appropriate permissions on [GitHub](https://github.com/settings/tokens).
@@ -22,12 +23,14 @@ Before using this repository, ensure the following tools are installed:
 ### Install Ansible
 
 To install `ansible` we can use `pipx` to install `pipx` (https://github.com/pypa/pipx)
+
 ```bash
 brew install pipx
 pipx ensurepath
 ```
 
 Then you can install `Ansible`:
+
 ```bash
 pipx install --include-deps ansible
 ```
@@ -52,6 +55,7 @@ Navigate to the repository directory and execute the Ansible playbook:
 ```bash
 cd ~
 cd .dotfiles
+cd ansible
 export GITHUB_TOKEN=your_personal_access_token
 ansible-playbook --ask-become-pass --ask-vault-pass setup.yml
 ```
@@ -63,6 +67,7 @@ This script automates the setup process, including the installation of necessary
 After running the playbook, your environment will be set up with the configurations specified in the repository. This includes the setup of tools like Zsh and VSCode, along with the decryption and placement of SSH keys.
 
 ## Additional customizations after the setup
+
 - Install and activate this powerline-patched nerd font and use it in iTerm2 [Source Code Pro for Powerline](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SourceCodePro.zip)
 - Install and configure Powerlevel10k as Zsh theme. [Installation guide here](https://github.com/romkatv/powerlevel10k#oh-my-zsh) and [setup video here](https://www.youtube.com/watch?v=CF1tMjvHDRA&ab_channel=JoseanMartinez)
 - Activate the coolnight color preset you can find in `iterm2`
@@ -82,6 +87,7 @@ After running the playbook, your environment will be set up with the configurati
 ## Debugging
 
 You can debug the ansible playbook with the `--check` flag
+
 ```bash
 ansible-playbook --check --ask-become-pass --ask-vault-pass setup.yml -vvv
 ```
@@ -92,7 +98,6 @@ ansible-playbook --check --ask-become-pass --ask-vault-pass setup.yml -vvv
 - Verify Ansible is correctly installed and configured on your machine.
 
 ## Future Updates
-- [ ] Automate installation of Xcode Command Line Tools via Brew
+
+- [ ] Automate installation of gpg via Brew to sign git commits
 - [ ] Automate installation of the .Net Runtime via Brew
-- [ ] Automate installation of the latest Angular CLI
-- [ ] Automate installation and configuration of neovim

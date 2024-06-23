@@ -1,0 +1,11 @@
+---
+- name: Check if autojump is installed
+  command: autojump --version
+  register: autojump_installed
+  ignore_errors: yes
+
+- name: Install autojump
+  homebrew:
+    name: autojump
+    state: present
+  when: autojump_installed is failed

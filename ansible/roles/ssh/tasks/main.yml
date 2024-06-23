@@ -1,0 +1,17 @@
+---
+- name: Decrypt SSH keys
+  shell: ansible-vault decrypt {{ item }}
+  with_fileglob:
+    - ~/.dotfiles/personal/.ssh-keys/*
+  args:
+    removes: ~/.dotfiles/personal/.ssh-keys/*
+
+- name: Ensure SSH directory exists
+  file:
+    path: ~/.ssh
+    state: directory
+
+- name: Move SSH keys
+  shell: mv ~/.dotfiles/personal/.ssh-keys/* ~/.ssh/
+  args:
+    removes: ~/.dotfiles/personal/.ssh-keys/*

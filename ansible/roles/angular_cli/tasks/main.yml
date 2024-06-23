@@ -1,0 +1,12 @@
+---
+- name: Check if Angular CLI is installed
+  command: ng version
+  register: angular_cli_installed
+  ignore_errors: yes
+
+- name: Install Angular CLI
+  npm:
+    name: angular/cli
+    state: present
+    global: yes
+  when: angular_cli_installed is failed

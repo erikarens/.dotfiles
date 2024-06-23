@@ -1,0 +1,16 @@
+---
+- name: Set up development environment
+  hosts: localhost
+  become: no
+  roles:
+    - homebrew
+    - git
+    - zsh
+    - ohmyzsh
+    - iterm2
+    - vscode
+    - dotfiles
+    - ssh
+    - tmux
+    - neovim
+    - autojump

@@ -1,0 +1,10 @@
+---
+- name: Check if Xcode Command Line Tools are installed
+  command: xcode-select --install
+  register: xcode_cli_installed
+  ignore_errors: yes
+
+- name: Install Xcode Command Line Tools
+  shell: |
+    xcode-select --install
+  when: xcode_cli_installed is failed

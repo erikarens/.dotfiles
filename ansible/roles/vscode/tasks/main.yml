@@ -1,0 +1,49 @@
+---
+- name: Check if Visual Studio Code is installed
+  command: ls /Applications/Visual\ Studio\ Code.app
+  register: vscode_installed
+  ignore_errors: yes
+
+- name: Install Visual Studio Code
+  homebrew_cask:
+    name: visual-studio-code
+    state: present
+  when: vscode_installed is failed
+
+- name: Check if VSCode settings.json exists and is not a symlink
+  stat:
+    path: ~/Library/Application Support/Code/User/settings.json
+  register: vscode_settings_file
+
+- name: Remove default VSCode settings.json if it exists
+  file:
+    path: ~/Library/Application Support/Code/User/settings.json
+    state: absent
+  when: vscode_settings_file.stat.exists and not vscode_settings_file.stat.islnk
+
+- name: Symlink VSCode settings.json
+  file:
+    src: ~/.dotfiles/vscode/settings.json
+    dest: ~/Library/Application Support/Code/User/settings.json
+    state: link
+    force: true
+  when: not vscode_settings_file.stat.exists or not vscode_settings_file.stat.islnk
+
+- name: Check if VSCode keybindings.json exists and is not a symlink
+  stat:
+    path: ~/Library/Application Support/Code/User/keybindings.json
+  register: vscode_keybindings_file
+
+- name: Remove default VSCode keybindings.json if it exists
+  file:
+    path: ~/Library/Application Support/Code/User/keybindings.json
+    state: absent
+  when: vscode_keybindings_file.stat.exists and not vscode_keybindings_file.stat.islnk
+
+- name: Symlink VSCode keybindings.json
+  file:
+    src: ~/.dotfiles/vscode/keybindings.json
+    dest: ~/Library/Application Support/Code/User/keybindings.json
+    state: link
+    force: true
+  when: not vscode_keybindings_file.stat.exists or not vscode_keybindings_file.stat.islnk

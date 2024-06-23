@@ -1,0 +1,11 @@
+---
+- name: Check if Git is installed
+  command: git --version
+  register: git_installed
+  ignore_errors: yes
+
+- name: Install Git
+  homebrew:
+    name: git
+    state: present
+  when: git_installed is failed

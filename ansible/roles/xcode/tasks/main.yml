@@ -1,0 +1,11 @@
+---
+- name: Check if Xcode is installed
+  command: xcodebuild -version
+  register: xcode_installed
+  ignore_errors: yes
+
+- name: Install Xcode
+  homebrew_cask:
+    name: xcode
+    state: present
+  when: xcode_installed is failed

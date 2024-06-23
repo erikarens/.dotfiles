@@ -1,0 +1,42 @@
+---
+- name: Check if Zsh is installed
+  command: zsh --version
+  register: zsh_installed
+  ignore_errors: yes
+
+- name: Install Zsh
+  homebrew:
+    name: zsh
+    state: present
+  when: zsh_installed is failed
+
+- name: Check if .zshrc symlink exists
+  stat:
+    path: ~/.zshrc
+  register: zshrc_link
+
+- name: Symlink .zshrc
+  file:
+    src: ~/.dotfiles/zsh/.zshrc
+    dest: ~/.zshrc
+    state: link
+  when: not zshrc_link.stat.exists
+
+- name: Check if .p10k.zsh symlink exists
+  stat:
+    path: ~/.p10k.zsh
+  register: p10k_zsh_link
+
+- name: Symlink .p10k.zsh
+  file:
+    src: ~/.dotfiles/zsh/.p10k.zsh
+    dest: ~/.p10k.zsh
+    state: link
+  when: not p10k_zsh_link.stat.exists
+
+- name: Ensure Powerlevel10k is installed
+  shell: |
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+  args:
+    creates: "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+led

@@ -1,0 +1,23 @@
+---
+- name: Check if Neovim is installed
+  command: nvim --version
+  register: neovim_installed
+  ignore_errors: yes
+
+- name: Install Neovim
+  homebrew:
+    name: neovim
+    state: present
+  when: neovim_installed is failed
+
+- name: Ensure Neovim config directory exists
+  file:
+    path: ~/.config/nvim
+    state: directory
+
+- name: Symlink Neovim config files
+  file:
+    src: ~/.dotfiles/nvim/
+    dest: ~/.config/nvim
+    state: link
+    force: true

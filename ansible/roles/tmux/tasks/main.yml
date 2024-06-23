@@ -1,0 +1,23 @@
+---
+- name: Check if tmux is installed
+  command: tmux -V
+  register: tmux_installed
+  ignore_errors: yes
+
+- name: Install tmux
+  homebrew:
+    name: tmux
+    state: present
+  when: tmux_installed is failed
+
+- name: Check if .tmux.conf symlink exists
+  stat:
+    path: ~/.tmux.conf
+  register: tmux_conf_link
+
+- name: Symlink .tmux.conf
+  file:
+    src: ~/.dotfiles/tmux/.tmux.conf
+    dest: ~/.tmux.conf
+    state: link
+  when: not tmux_conf_link.stat.exists

@@ -1,0 +1,11 @@
+---
+- name: Check if iTerm2 is installed
+  command: ls /Applications/iTerm.app
+  register: iterm2_installed
+  ignore_errors: yes
+
+- name: Install iTerm2
+  homebrew_cask:
+    name: iterm2
+    state: present
+  when: iterm2_installed is failed
