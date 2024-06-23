@@ -34,9 +34,19 @@
     state: link
   when: not p10k_zsh_link.stat.exists
 
-- name: Ensure Powerlevel10k is installed
-  shell: |
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-  args:
-    creates: "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-led
+- name: Ensure Powerlevel10k theme directory exists
+  file:
+    path: ~/.oh-my-zsh/custom/themes
+    state: directory
+
+- name: Check if Powerlevel10k is installed
+  stat:
+    path: ~/.oh-my-zsh/custom/themes/powerlevel10k
+  register: powerlevel10k_installed
+
+- name: Install Powerlevel10k
+  git:
+    repo: "https://github.com/romkatv/powerlevel10k.git"
+    dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+    depth: 1
+  when: not powerlevel10k_installed.stat.exists
