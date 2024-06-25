@@ -103,3 +103,4 @@ ansible-playbook --check --ask-become-pass --ask-vault-pass setup.yml -vvv
 
 - [ ] Automate installation of gpg via Brew to sign git commits
 - [ ] Automate installation of the .Net Runtime via Brew
+- [ ] AUtomatically clone zsh plugins to the custom/plugins folder

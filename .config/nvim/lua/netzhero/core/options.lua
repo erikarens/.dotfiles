@@ -1,8 +1,3 @@
--- [[ Setting options ]]
--- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
-
 vim.cmd("let g:netrw_liststyle = 3")
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
@@ -73,3 +68,4 @@ vim.opt.hlsearch = true
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
