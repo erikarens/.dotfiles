@@ -26,26 +26,27 @@ return {
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf, silent = true }
 
+        local map = function(keys, func, desc)
+          vim.keymap.set("n", keys, func, { buffer = ev.buf, desc = "LSP: " .. desc })
+        end
+
         -- set keybinds
         opts.desc = "Show LSP references"
-        keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+        keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
-        opts.desc = "Go to declaration"
+        opts.desc = "[G]oto [D]eclaration"
         keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
-        opts.desc = "Show LSP definitions"
+        opts.desc = "[G]oto [D]efinition"
         keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
-        opts.desc = "Show LSP implementations"
+        opts.desc = "[G]oto [I]mplementation"
         keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
-
-        opts.desc = "Show LSP type definitions"
-        keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
         opts.desc = "See available code actions"
         keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
 
-        opts.desc = "Smart rename"
+        opts.desc = "[R]e[n]ame"
         keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
         opts.desc = "Show buffer diagnostics"
@@ -65,6 +66,37 @@ return {
 
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+        -- The following two autocommands are used to highlight references of the
+        -- word under your cursor when your cursor rests there for a little while.
+        --    See `:help CursorHold` for information about when this is executed
+        --
+        -- When you move your cursor, the highlights will be cleared (the second autocommand).
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client and client.server_capabilities.documentHighlightProvider then
+          local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+          vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            buffer = ev.buf,
+            group = highlight_augroup,
+            callback = vim.lsp.buf.document_highlight,
+          })
+
+          vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+            buffer = ev.buf,
+            group = highlight_augroup,
+            callback = vim.lsp.buf.clear_references,
+          })
+        end
+
+        -- The following autocommand is used to enable inlay hints in your
+        -- code, if the language server you are using supports them
+        --
+        -- This may be unwanted, since they displace some of your code
+        if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+          map("<leader>th", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({}))
+          end, "[T]oggle Inlay [H]ints")
+        end
       end,
     })
 
