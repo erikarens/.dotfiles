@@ -44,6 +44,8 @@
   "editor.lineNumbers": "relative",
   "vim.leader": "space",
   "workbench.startupEditor": "none",
+  "vim.useSystemClipboard": true,
+  // Copilot settings
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,

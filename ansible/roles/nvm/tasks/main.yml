@@ -1,0 +1,11 @@
+---
+- name: Check if nvm is installed
+  command: nvm --version
+  register: nvm
+  ignore_errors: yes
+
+- name: Install ripgrep
+  homebrew:
+    name: nvm
+    state: present
+  when: nvm_installed is failed

@@ -1,0 +1,11 @@
+---
+- name: Check if ripgrep is installed
+  command: rg --version
+  register: ripgrep
+  ignore_errors: yes
+
+- name: Install ripgrep
+  homebrew:
+    name: ripgrep
+    state: present
+  when: ripgrep_installed is failed

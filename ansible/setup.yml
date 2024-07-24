@@ -6,6 +6,9 @@
     - homebrew
     - git
     - zsh
+    - zsh-autosuggestions
+    - zsh-history-substring-search
+    - zsh-syntax-highlighting
     - ohmyzsh
     - iterm2
     - vscode
@@ -13,4 +16,6 @@
     - ssh
     - tmux
     - neovim
+    - ripgrep
     - autojump
+    - nvm

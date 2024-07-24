@@ -1,0 +1,5 @@
+---
+- name: Install zsh-syntax-highlighting
+  homebrew:
+    name: zsh-syntax-highlighting
+    state: present

@@ -1,0 +1,5 @@
+---
+- name: Install zsh-history-substring-search
+  homebrew:
+    name: zsh-history-substring-search
+    state: present

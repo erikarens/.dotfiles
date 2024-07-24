@@ -1,0 +1,5 @@
+---
+- name: Install zsh-autosuggestions
+  homebrew:
+    name: zsh-autosuggestions
+    state: present
