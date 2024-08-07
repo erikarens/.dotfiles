@@ -1,0 +1,11 @@
+---
+- name: Check if Lazygit is installed
+  command: lazygit --version
+  register: lazygit_installed
+  ignore_errors: yes
+
+- name: Install Lazygit
+  homebrew_cask:
+    name: lazygit
+    state: present
+  when: lazygit_installed is failed
