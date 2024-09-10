@@ -32,7 +32,6 @@ return {
         "cssls",
         "omnisharp",
         "tailwindcss",
-        "vuels",
         "lua_ls",
         "angularls",
         "emmet_ls",
