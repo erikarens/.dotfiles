@@ -47,3 +47,9 @@ map("n", "<leader>.s", "<cmd>SessionSave<CR>", { desc = "Save session" })
 
 -- Uncomment if you need save with Ctrl-S
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr>", { desc = "Save file" })
+
+-- Remove the default keymaps for Tabufline
+vim.keymap.del("n", "<leader>b") -- Remove buffer new keymap
+vim.keymap.del("n", "<tab>") -- Remove buffer goto next keymap
+vim.keymap.del("n", "<S-tab>") -- Remove buffer goto prev keymap
+vim.keymap.del("n", "<leader>x") -- Remove buffer close keymap
