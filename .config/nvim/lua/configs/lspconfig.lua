@@ -30,7 +30,6 @@ local function custom_on_attach(client, bufnr)
   keymap.set("n", "K", vim.lsp.buf.hover, opts)
   keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
   keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-
 end
 
 -- lsps with default config
@@ -49,24 +48,11 @@ end
 --   capabilities = nvlsp.capabilities,
 -- }
 
-lspconfig.eslint.setup {
-  on_attach = function(client, bufnr)
-    custom_on_attach(client, bufnr)
-    -- Optional: if ESLint provides formatting, you can disable other formatters
-    client.server_capabilities.documentFormattingProvider = true
-  end,
-  settings = {
-    format = { enable = true },
-    lint = {
-      enable = true,              -- Enable linting with ESLint
-      packageManager = "npm",      -- Adjust depending on your package manager
-    },
-  },
-}
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 
 lspconfig.ts_ls.setup {
   on_attach = custom_on_attach,
-  capabilities = capabilities,
+  capabilities = nvlsp.capabilities,
   init_options = {
     preferences = {
       importModuleSpecifierPreference = "relative",
@@ -75,35 +61,48 @@ lspconfig.ts_ls.setup {
   },
 }
 
--- configure angularls
-local default_node_modules = vim.fn.getcwd() .. "/node_modules"
+-- accessing the mason-regisrty to configure lsp's with it
+local ok, mason_registry = pcall(require, 'mason-registry')
+if not ok then
+  vim.notify 'mason-registry could not be loaded'
+  return
+end
+
+-- AngularLS setup using mason-registry
+local angularls_path = mason_registry.get_package('angular-language-server'):get_install_path()
+
 local ngls_cmd = {
-  "ngserver",
-  "--stdio",
-  "--tsProbeLocations", default_node_modules,
-  "--ngProbeLocations", default_node_modules,
-  "--experimental-ivy",
+  'ngserver',
+  '--stdio',
+  '--tsProbeLocations',
+  table.concat({
+    angularls_path,
+    vim.uv.cwd(),
+  }, ','),
+  '--ngProbeLocations',
+  table.concat({
+    angularls_path .. '/node_modules/@angular/language-server',
+    vim.uv.cwd(),
+  }, ','),
 }
 
 lspconfig.angularls.setup {
+  cmd = ngls_cmd,
   on_attach = custom_on_attach,
   capabilities = nvlsp.capabilities,
-  cmd = ngls_cmd,
   on_new_config = function(new_config)
     new_config.cmd = ngls_cmd
-  end
+  end,
 }
 
--- configure omnisharp
---
--- You need to install omnisharp-roslyn and define the path to omnisharp below
--- for macOS do the following https://github.com/OmniSharp/homebrew-omnisharp-roslyn
---
--- This is the main repo im talking about https://github.com/omnisharp/omnisharp-roslyn
+-- Omnisharp setup using mason-registry
+local omnisharp_path = mason_registry.get_package('omnisharp'):get_install_path()
+
+-- Omnisharp setup
 lspconfig.omnisharp.setup {
   on_attach = custom_on_attach,
   capabilities = nvlsp.capabilities,
-  cmd = { "dotnet", "/opt/homebrew/bin/omnisharp" },
+  cmd = { omnisharp_path .. "/omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
   root_dir = function()
     return vim.loop.cwd()
   end,
@@ -124,5 +123,20 @@ lspconfig.omnisharp.setup {
     Sdk = {
       IncludePrereleases = true,
     },
-  }
+  },
+}
+
+lspconfig.eslint.setup {
+  on_attach = function(client, bufnr)
+    custom_on_attach(client, bufnr)
+    -- Optional: if ESLint provides formatting, you can disable other formatters
+    client.server_capabilities.documentFormattingProvider = true
+  end,
+  settings = {
+    format = { enable = true },
+    lint = {
+      enable = true, -- Enable linting with ESLint
+      packageManager = "npm", -- Adjust depending on your package manager
+    },
+  },
 }

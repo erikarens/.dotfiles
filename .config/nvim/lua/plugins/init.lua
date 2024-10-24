@@ -12,6 +12,17 @@ return {
     end,
   },
 
+  -- These are some examples, uncomment them if you want to see them work!
+  -- {
+  -- 	"nvim-treesitter/nvim-treesitter",
+  -- 	opts = {
+  -- 		ensure_installed = {
+  -- 			"vim", "lua", "vimdoc",
+  --      "html", "css"
+  -- 		},
+  -- 	},
+  -- },
+
   -- LazyGit plugin
   {
     "kdheepak/lazygit.nvim",
@@ -70,15 +81,4 @@ return {
       virtual_text_column = 1, -- Set where the virtual text should appear
     },
   },
-
-  -- These are some examples, uncomment them if you want to see them work!
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
 }

@@ -15,6 +15,7 @@
   "security.workspace.trust.untrustedFiles": "open",
   // Terminal specific settings
   "terminal.integrated.fontFamily": "SourceCodePro Nerd Font",
+  "terminal.integrated.fontWeight": "500",
   // Extension specific settings
   "prettier.printWidth": 140,
   "prettier.singleQuote": true,
@@ -35,10 +36,6 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "omnisharp.organizeImportsOnFormat": true,
-  "[csharp]": {
-    "editor.defaultFormatter": "ms-dotnettools.csdevkit"
   },
   // Vim specific settings
   "editor.lineNumbers": "relative",
