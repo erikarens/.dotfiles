@@ -1,3 +1,2 @@
-require("netzhero.core")
-require("netzhero.lazy")
-
+require("config.core")
+require("config.lazy")
