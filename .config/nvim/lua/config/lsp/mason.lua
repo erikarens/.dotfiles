@@ -14,12 +14,12 @@ return {
     mason.setup({
       -- Registries that should be used.
       registries = {
-        'github:mason-org/mason-registry',
+        "github:mason-org/mason-registry",
         -- Adds a custom registry containing the roslyn and rzls packages.
         -- These packages are currently not included in the mason registry itself.
         -- Source: https://github.com/seblj/roslyn.nvim / https://github.com/tris203/rzls.nvim
         -- TODO: As soon as the packages beeing added to the mason registry we can remove this.
-        'github:crashdummyy/mason-registry',
+        "github:crashdummyy/mason-registry",
       },
       -- ui config
       ui = {
@@ -52,12 +52,12 @@ return {
     -- Mason Tool Installer setup
     mason_tool_installer.setup({
       ensure_installed = {
-        "prettier",   -- JavaScript/TypeScript formatter
-        "stylua",     -- Lua formatter
-        "isort",      -- Python import sorter
-        "black",      -- Python formatter
+        "prettier", -- JavaScript/TypeScript formatter
+        "stylua", -- Lua formatter
+        "isort", -- Python import sorter
+        "black", -- Python formatter
         "pylint",
-        "eslint_d",   -- ESLint for JavaScript/TypeScript
+        "eslint_d", -- ESLint for JavaScript/TypeScript
       },
     })
   end,
