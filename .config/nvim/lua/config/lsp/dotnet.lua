@@ -12,7 +12,7 @@ return {
   },
   event = { "BufReadPre", "BufNewFile" },
   -- Only load when editing C# and Razor files:
-  -- ft = {"cs", "razor"},
+  ft = { "cs", "razor" },
 
   -- Run BEFORE the plugin is fully loaded
   init = function()
@@ -135,4 +135,3 @@ return {
     })
   end,
 }
-
