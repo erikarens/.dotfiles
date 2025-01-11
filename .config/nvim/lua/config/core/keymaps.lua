@@ -44,3 +44,14 @@ vim.keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh 
 -- Session management
 vim.keymap.set("n", "<leader>.r", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" })
 vim.keymap.set("n", "<leader>.s", "<cmd>SessionSave<CR>", { desc = "Save session for auto session root dir" })
+
+vim.keymap.set("n", "<leader>fp", function()
+  local file_dir = vim.fn.expand("%:p:h")
+  if file_dir ~= "" then
+    vim.fn.setreg("+", file_dir) -- Copies the directory path to the clipboard
+    vim.notify("File path copied to clipboard.")
+  else
+    vim.notify("No file is currently focused.", vim.log.levels.WARN)
+  end
+end, { desc = "Copy the current file's directory to clipboard" }) -- Copy the current file's directory to clipboard
+

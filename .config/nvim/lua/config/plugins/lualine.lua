@@ -49,6 +49,18 @@ return {
       },
     }
 
+    -- Custom function to display the current Roslyn target
+    local function roslyn_target()
+      local target = vim.g.roslyn_nvim_selected_solution
+      if target then
+        -- Make the path relative to the current working directory
+        local relative_path = vim.fn.fnamemodify(target, ":.")
+        return "Rosyln Target: " .. relative_path
+      else
+        return ""
+      end
+    end
+
     -- configure lualine with modified theme
     lualine.setup({
       options = {
@@ -65,8 +77,10 @@ return {
           { "fileformat" },
           { "filetype" },
         },
+        lualine_y = {
+          { roslyn_target },
+        },
       },
     })
   end,
 }
-
