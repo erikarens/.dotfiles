@@ -31,8 +31,8 @@ return {
       },
     })
 
-    -- Mason-LSPConfig setup
     mason_lspconfig.setup({
+      -- list of servers for mason to install
       ensure_installed = {
         "ts_ls",
         "html",
@@ -46,18 +46,25 @@ return {
         "jsonls",
         "dockerls",
         "docker_compose_language_service",
+        "bashls",
+        "terraformls",
       },
     })
 
-    -- Mason Tool Installer setup
     mason_tool_installer.setup({
+      -- Mason Tool Installer setup
       ensure_installed = {
-        "prettier", -- JavaScript/TypeScript formatter
-        "stylua", -- Lua formatter
-        "isort", -- Python import sorter
-        "black", -- Python formatter
+        "prettier", -- prettier formatter
+        "stylua", -- lua formatter
+        "isort", -- python formatter
+        "black", -- python formatter
         "pylint",
-        "eslint_d", -- ESLint for JavaScript/TypeScript
+        "eslint_d",
+        "debugpy", -- python debugger
+        "roslyn",
+        "rzls",
+        "ansible-lint",
+        "tflint", -- terraform linter
       },
     })
   end,

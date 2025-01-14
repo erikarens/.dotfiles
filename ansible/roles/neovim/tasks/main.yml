@@ -12,12 +12,12 @@
 
 - name: Ensure Neovim config directory exists
   file:
-    path: ~/.config/nvim
+    path: ~/nvim
     state: directory
 
 - name: Symlink Neovim config files
   file:
     src: ~/.dotfiles/nvim/
-    dest: ~/.config/nvim
+    dest: ~/nvim
     state: link
     force: true
