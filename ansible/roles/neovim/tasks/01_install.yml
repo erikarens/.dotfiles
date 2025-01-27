@@ -1,0 +1,6 @@
+---
+- name: Install and configure Neovim
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - import_tasks: ./main.yml

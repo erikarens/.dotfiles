@@ -1,3 +1,4 @@
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -38,6 +39,7 @@ alias gl="git log --graph --color --all --decorate"
 alias glo="git log --oneline --graph --color --all --decorate"
 alias gundo="git reset --soft HEAD~"
 alias gamend="git commit -av --amend --no-edit"
+alias lg="lazygit"
 alias zshconfig="open ~/.zshrc"
 alias install="brew install"
 alias uninstall="brew uninstall"
@@ -54,6 +56,14 @@ function private() {
 
 function dotfiles() {
   cd ~/.dotfiles
+}
+
+function config() {
+  cd ~/.config
+}
+
+function brain() {
+  cd ~/Documents/obsibrain-vault
 }
 
 function hl() {
@@ -95,12 +105,10 @@ if command -v rbenv &> /dev/null; then
   eval "$(rbenv init - zsh)"
 fi
 
-# Load NVM - Node Version Manager
-export NVM_DIR="$HOME/.nvm"
-if [ -s "/opt/homebrew/opt/nvm/nvm.sh" ]; then
-  source "/opt/homebrew/opt/nvm/nvm.sh"
-  source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-fi
+# Load NVM - Node Version Manager (Normal installation not with brew, because brew is not supported by nvm)
+export NVM_DIR=~/.nvm
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Load Angular CLI autocompletion
 if command -v ng &> /dev/null; then
@@ -116,6 +124,12 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
 # JetBrains Rider
 export PATH="$PATH:/Applications/Rider.app/Contents/MacOS"
 
+# Golang
+export GOPATH=$HOME/go
+export GOROOT=/opt/homebrew/Cellar/go/1.23.1/libexec
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -124,3 +138,4 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+

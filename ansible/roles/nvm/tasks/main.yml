@@ -4,8 +4,9 @@
   register: nvm
   ignore_errors: yes
 
-- name: Install ripgrep
-  homebrew:
-    name: nvm
-    state: present
+- name: Install nvm
+  ansible.builtin.shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+  args:
+    creates: "~/.nvm/nvm.sh"
   when: nvm_installed is failed
