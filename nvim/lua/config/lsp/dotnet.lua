@@ -5,6 +5,9 @@
 -- !To then install the packages to :MasonInstall roslyn & :MasonInstall rzls
 -- This will only work once the lsp is beeing laoded (open a cs and razor file)
 -- Or temporarily remove the `ft = {"cs", "razor"}` part of the config to install it
+--
+-- Also makre sure that the correct dotnet sdk version is installed
+-- For a brew tap -> https://github.com/isen-ng/homebrew-dotnet-sdk-versions
 return {
   "seblj/roslyn.nvim",
   dependencies = {
@@ -65,6 +68,18 @@ return {
     roslyn.setup({
       -- The `config` table passes standard LSP client config to `vim.lsp.start`
       config = {
+        cmd = {
+          "dotnet",
+          vim.fs.joinpath(
+            -- the `tostring` is kinda hacky to make sure we always read this as a string.
+            tostring(vim.fn.stdpath("data")),
+            "mason",
+            "packages",
+            "roslyn",
+            "libexec",
+            "Microsoft.CodeAnalysis.LanguageServer.dll"
+          ),
+        },
         on_attach = lsp_utils.on_attach,
         capabilities = capabilities,
         -- Add rzls handlers to make the packages work with each other
@@ -97,7 +112,8 @@ return {
       exe = {
         "dotnet",
         vim.fs.joinpath(
-          vim.fn.stdpath("data"),
+          -- the `tostring` is kinda hacky to make sure we always read this as a string.
+          tostring(vim.fn.stdpath("data")),
           "mason",
           "packages",
           "roslyn",
@@ -107,6 +123,7 @@ return {
       },
       -- Additional arguments
       args = {
+        "--stdio",
         "--logLevel=Information",
         "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
         "--razorSourceGenerator=" .. vim.fs.joinpath(
@@ -127,7 +144,7 @@ return {
           "Microsoft.NET.Sdk.Razor.DesignTime.targets"
         ),
       },
-      filewatching = true,
+      filewatching = "roslyn",
       choose_target = nil,
       ignore_target = nil,
       broad_search = true,

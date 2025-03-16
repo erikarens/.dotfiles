@@ -49,6 +49,22 @@ return {
         "bashls",
         "terraformls",
       },
+      automatic_installation = {
+        "ts_ls",
+        "html",
+        "cssls",
+        "tailwindcss",
+        "lua_ls",
+        "angularls",
+        "emmet_ls",
+        "prismals",
+        "pyright",
+        "jsonls",
+        "dockerls",
+        "docker_compose_language_service",
+        "bashls",
+        "terraformls",
+      },
     })
 
     mason_tool_installer.setup({
