@@ -63,7 +63,7 @@ function config() {
 }
 
 function brain() {
-  cd ~/Documents/obsibrain-vault
+  cd ~/Documents/EriksSecondBrain
 }
 
 function hl() {
