@@ -14,6 +14,14 @@
         "key": "cmd+i",
         "command": "composerMode.agent"
     },
+    {
+        "key": "shift+enter",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": {
+            "text": "\\\r\n"
+        },
+        "when": "terminalFocus"
+    },
     // Vim specific keybindings
     // When the parameterHints and the suggestWidget is visible the escape key no longer goes back to normal mode instead just closes the context-menu.
     // {

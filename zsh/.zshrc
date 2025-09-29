@@ -86,6 +86,17 @@ function up() {
   fi
 }
 
+# Function to kill all processes on a certain port
+function killport() {
+  port=$(lsof -n -i4TCP:$1 | grep LISTEN | awk '{ print $2 }')
+  if [[ -n $port ]]; then
+    kill -9 $port
+    echo "Killed process $port on port $1"
+  else
+    echo "No process found on port $1"
+  fi
+}
+
 # Open JetBrains Rider with the solution file in the current directory.
 function rider() {
   if [[ "$1" == "." ]]; then
