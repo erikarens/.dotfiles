@@ -12,6 +12,7 @@
     - ohmyzsh
     - iterm2
     - vscode
+    - claude
     - dotfiles
     - ssh
     - tmux

@@ -1,0 +1,61 @@
+---
+- name: Check if Claude Code is installed
+  command: claude --version
+  register: claude_installed
+  ignore_errors: yes
+
+- name: Install Claude Code via Homebrew
+  homebrew:
+    name: claude-code
+    state: present
+  when: claude_installed is failed
+
+- name: Ensure .claude directory exists
+  file:
+    path: ~/.claude
+    state: directory
+    mode: '0755'
+
+- name: Ensure .claude/plugins directory exists
+  file:
+    path: ~/.claude/plugins
+    state: directory
+    mode: '0755'
+
+- name: Check if settings.json exists and is not a symlink
+  stat:
+    path: ~/.claude/settings.json
+  register: claude_settings_file
+
+- name: Remove existing settings.json if it's not a symlink
+  file:
+    path: ~/.claude/settings.json
+    state: absent
+  when: claude_settings_file.stat.exists and not claude_settings_file.stat.islnk
+
+- name: Symlink Claude settings.json
+  file:
+    src: ~/.dotfiles/.claude/settings.json
+    dest: ~/.claude/settings.json
+    state: link
+    force: yes
+  when: not claude_settings_file.stat.exists or not claude_settings_file.stat.islnk
+
+- name: Check if plugins/config.json exists and is not a symlink
+  stat:
+    path: ~/.claude/plugins/config.json
+  register: claude_plugins_config_file
+
+- name: Remove existing plugins/config.json if it's not a symlink
+  file:
+    path: ~/.claude/plugins/config.json
+    state: absent
+  when: claude_plugins_config_file.stat.exists and not claude_plugins_config_file.stat.islnk
+
+- name: Symlink Claude plugins config.json
+  file:
+    src: ~/.dotfiles/.claude/plugins/config.json
+    dest: ~/.claude/plugins/config.json
+    state: link
+    force: yes
+  when: not claude_plugins_config_file.stat.exists or not claude_plugins_config_file.stat.islnk
