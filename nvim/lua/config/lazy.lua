@@ -12,6 +12,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Patch plugin files that use deprecated APIs (run before plugins load)
+require("config.utils.patch_deprecations").run()
+
 require("lazy").setup({
   { import = "config.plugins" },
   { import = "config.lsp" },
@@ -24,4 +27,5 @@ require("lazy").setup({
   change_detection = {
     notify = false,
   },
+  rocks = { hererocks = false },
 })
