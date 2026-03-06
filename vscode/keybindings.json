@@ -22,6 +22,11 @@
         },
         "when": "terminalFocus"
     },
+    {
+        "key": "alt+cmd+s",
+        "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
+        "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
+    },
     // Vim specific keybindings
     // When the parameterHints and the suggestWidget is visible the escape key no longer goes back to normal mode instead just closes the context-menu.
     // {

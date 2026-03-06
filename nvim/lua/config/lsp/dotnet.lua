@@ -60,31 +60,49 @@ return {
     local capabilities = cmp_nvim_lsp.default_capabilities()
     local lsp_utils = require("config.utils.lsp_utils")
 
+    -- Resolve Roslyn server command: prefer native executable (no dotnet in PATH needed), else dotnet + DLL with full dotnet path.
+    local data = tostring(vim.fn.stdpath("data"))
+    local libexec = vim.fs.joinpath(data, "mason", "packages", "roslyn", "libexec")
+    local native_exe = vim.fs.joinpath(libexec, "Microsoft.CodeAnalysis.LanguageServer")
+    local dll_path = vim.fs.joinpath(libexec, "Microsoft.CodeAnalysis.LanguageServer.dll")
+
+    local function dotnet_bin()
+      local exe = vim.fn.exepath("dotnet")
+      if exe and exe ~= "" then
+        return exe
+      end
+      -- Fallbacks when Neovim is launched without dotnet in PATH (e.g. from Cursor/IDE).
+      local candidates = {
+        "/usr/local/share/dotnet/dotnet",
+        "/opt/homebrew/share/dotnet/dotnet",
+      }
+      for _, p in ipairs(candidates) do
+        if vim.fn.executable(p) == 1 then
+          return p
+        end
+      end
+      return "dotnet"
+    end
+
+    local cmd
+    if vim.fn.executable(native_exe) == 1 then
+      -- Use native executable so we don't depend on dotnet in PATH (fixes exit code 150 / "Could not execute..." when started from GUI).
+      cmd = { native_exe }
+    else
+      cmd = { dotnet_bin(), dll_path }
+    end
+
     rzls.setup({
       on_attach = lsp_utils.on_attach,
       capabilities = capabilities,
     })
 
     roslyn.setup({
-      -- The `config` table passes standard LSP client config to `vim.lsp.start`
       config = {
-        cmd = {
-          "dotnet",
-          vim.fs.joinpath(
-            -- the `tostring` is kinda hacky to make sure we always read this as a string.
-            tostring(vim.fn.stdpath("data")),
-            "mason",
-            "packages",
-            "roslyn",
-            "libexec",
-            "Microsoft.CodeAnalysis.LanguageServer.dll"
-          ),
-        },
+        cmd = cmd,
         on_attach = lsp_utils.on_attach,
         capabilities = capabilities,
-        -- Add rzls handlers to make the packages work with each other
         handlers = require("rzls.roslyn_handlers"),
-        -- `settings` for Roslyn-specific functionality:
         settings = {
           ["csharp|inlay_hints"] = {
             csharp_enable_inlay_hints_for_implicit_object_creation = true,
@@ -105,29 +123,15 @@ return {
           },
         },
       },
-      -- We need to make sure that the exe path lead to the `Microsoft.CodeAnalysis.LanguageServer.dll`.
-      -- We can check if it's either stored under `~/.local/share/nvimmason/packages/roslyn/libexec` or `~/.local/share/nvim/roslyn`
-      -- And obviously we need to make sure that the dotnet sdk is installed.
-      -- If we installed via Mason custom registry (which we do in the mason.lua by adding the `crashdummyy/mason-registry`), these are the default paths:
-      exe = {
-        "dotnet",
-        vim.fs.joinpath(
-          -- the `tostring` is kinda hacky to make sure we always read this as a string.
-          tostring(vim.fn.stdpath("data")),
-          "mason",
-          "packages",
-          "roslyn",
-          "libexec",
-          "Microsoft.CodeAnalysis.LanguageServer.dll"
-        ),
-      },
+      -- exe must match cmd so the plugin starts the same process (used for solution/project handling).
+      exe = cmd,
       -- Additional arguments
       args = {
         "--stdio",
         "--logLevel=Information",
         "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
         "--razorSourceGenerator=" .. vim.fs.joinpath(
-          vim.fn.stdpath("data") --[[@as string]],
+          data,
           "mason",
           "packages",
           "roslyn",
@@ -135,7 +139,7 @@ return {
           "Microsoft.CodeAnalysis.Razor.Compiler.dll"
         ),
         "--razorDesignTimePath=" .. vim.fs.joinpath(
-          vim.fn.stdpath("data") --[[@as string]],
+          data,
           "mason",
           "packages",
           "rzls",

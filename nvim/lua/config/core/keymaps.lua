@@ -42,8 +42,8 @@ vim.keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Collaps
 vim.keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })
 
 -- Session management
-vim.keymap.set("n", "<leader>.r", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" })
-vim.keymap.set("n", "<leader>.s", "<cmd>SessionSave<CR>", { desc = "Save session for auto session root dir" })
+vim.keymap.set("n", "<leader>.r", "<cmd>AutoSession restore<CR>", { desc = "Restore session for cwd" })
+vim.keymap.set("n", "<leader>.s", "<cmd>AutoSession save<CR>", { desc = "Save session for auto session root dir" })
 
 -- Copy file path of currently focused file or if in nvim.tree the current root directory
 vim.keymap.set("n", "<leader>fp", function()

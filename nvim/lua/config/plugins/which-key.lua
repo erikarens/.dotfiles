@@ -7,6 +7,7 @@ return {
 
     -- Document existing key chains
     require("which-key").add({
+      { "<leader>a", "which_key_ignore", desc = "[A]I / Claude Code" },
       { "<leader>c", "which_key_ignore", desc = "[C]ode" },
       { "<leader>d", "which_key_ignore", desc = "[D]ocument" },
       { "<leader>r", "which_key_ignore", desc = "[R]ename" },
