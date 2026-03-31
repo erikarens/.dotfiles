@@ -29,11 +29,8 @@ return {
     },
     { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
     { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
-    -- Toggle/focus from normal and visual
+    -- Optional: same toggle as before for muscle memory
     { "<C-,>", "<cmd>ClaudeCodeFocus<cr>", desc = "Claude Code", mode = { "n", "x" } },
-    -- Leave Claude terminal (exit terminal mode + focus other window)
-    { "<C-,>", "<C-\\><C-n><cmd>ClaudeCodeFocus<cr>", mode = "t", desc = "Leave Claude terminal" },
-    { "<leader>ac", "<C-\\><C-n><cmd>ClaudeCodeFocus<cr>", mode = "t", desc = "Leave Claude terminal" },
   },
   opts = {
     auto_start = true,

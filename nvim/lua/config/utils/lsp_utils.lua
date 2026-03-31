@@ -24,8 +24,8 @@ function M.on_attach(client, bufnr)
   buf_map("n", "<leader>rn", vim.lsp.buf.rename, "LSP: [R]e[n]ame")
   buf_map("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", "LSP: [D]iagnostics buffer")
   buf_map("n", "<leader>d", vim.diagnostic.open_float, "LSP: line [D]iagnostics")
-  buf_map("n", "[d", vim.diagnostic.goto_prev, "LSP: [G]oto previous diagnostic")
-  buf_map("n", "]d", vim.diagnostic.goto_next, "LSP: [G]oto next diagnostic")
+  buf_map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, "LSP: [G]oto previous diagnostic")
+  buf_map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, "LSP: [G]oto next diagnostic")
   buf_map("n", "K", vim.lsp.buf.hover, "LSP: [K]eyword hover")
   buf_map("n", "<leader>rs", ":LspRestart<CR>", "LSP: [R]e[S]tart")
 
@@ -47,7 +47,7 @@ function M.on_attach(client, bufnr)
   -- Toggle inlay hints, if supported
   if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
     buf_map("n", "<leader>th", function()
-      vim.lsp.inlay_hint(bufnr, nil)
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
     end, "LSP: [T]oggle Inlay [H]ints")
   end
 end

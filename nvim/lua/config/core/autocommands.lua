@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-    group = group,
+    group = vim.api.nvim_create_augroup("dotnet-compiler", { clear = true }),
     pattern = "cs",
     command = "compiler dotnet",
 })
