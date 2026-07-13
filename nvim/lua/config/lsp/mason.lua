@@ -15,11 +15,13 @@ return {
       -- Registries that should be used.
       registries = {
         "github:mason-org/mason-registry",
-        -- Adds a custom registry containing the roslyn and rzls packages.
-        -- These packages are currently not included in the mason registry itself.
-        -- Source: https://github.com/seblj/roslyn.nvim / https://github.com/tris203/rzls.nvim
-        -- TODO: As soon as the packages beeing added to the mason registry we can remove this.
-        "github:crashdummyy/mason-registry",
+        -- Custom registry providing an up-to-date `roslyn` package (the C#
+        -- language server, which now also handles Razor/CSHTML via cohosting).
+        -- The upstream mason `roslyn-language-server` package lags behind, so
+        -- we keep this. Note: the old `rzls` package was removed from this
+        -- registry once Razor support moved into roslyn itself.
+        -- Source: https://github.com/seblyng/roslyn.nvim
+        "github:Crashdummyy/mason-registry",
       },
       -- ui config
       ui = {
@@ -78,7 +80,6 @@ return {
         "eslint_d",
         "debugpy", -- python debugger
         "roslyn",
-        "rzls",
         "ansible-lint",
         "tflint", -- terraform linter
       },

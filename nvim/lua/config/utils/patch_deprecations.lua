@@ -4,6 +4,26 @@
 
 local M = {}
 
+-- Plain-text (non-pattern) replace-all. Avoids Lua-pattern magic chars.
+local function replace_all(s, find, repl)
+  local out, idx = {}, 1
+  while true do
+    local a, b = string.find(s, find, idx, true)
+    if not a then
+      out[#out + 1] = string.sub(s, idx)
+      break
+    end
+    out[#out + 1] = string.sub(s, idx, a - 1)
+    out[#out + 1] = repl
+    idx = b + 1
+  end
+  return table.concat(out)
+end
+
+-- Telescope's LSP builtins use several APIs deprecated in Nvim 0.11/0.12:
+--   * client.supports_method(...)  -> client:supports_method(...)  (method-call form)
+--   * vim.lsp.util.make_position_params() now requires a position_encoding arg
+--   * vim.lsp.util.jump_to_location() -> vim.lsp.util.show_document()
 local function patch_telescope_lsp()
   local path = vim.fn.stdpath("data") .. "/lazy/telescope.nvim/lua/telescope/builtin/__lsp.lua"
   local ok, content = pcall(vim.fn.readfile, path)
@@ -11,24 +31,34 @@ local function patch_telescope_lsp()
     return
   end
   local joined = table.concat(content, "\n")
+  local original = joined
 
-  -- Already patched?
-  if joined:find("client:supports_method(method, bufnr)") and joined:find("vim.lsp.util.show_document") then
-    return
-  end
+  -- Derive the offset encoding from the buffer's attached client at call time.
+  local enc = '(vim.lsp.get_clients({ bufnr = opts.bufnr })[1] or {}).offset_encoding'
 
-  local new_content = joined
-    :gsub(
-      "client%.supports_method(method, %{ bufnr = bufnr %})",
-      "client:supports_method(method, bufnr)"
-    )
-    :gsub(
-      "vim%.lsp%.util%.jump_to_location(flattened_results%[1%], offset_encoding)",
-      "vim.lsp.util.show_document(flattened_results[1], offset_encoding, { focus = true })"
-    )
+  joined = replace_all(
+    joined,
+    "client.supports_method(method, { bufnr = bufnr })",
+    "client:supports_method(method, { bufnr = bufnr })"
+  )
+  joined = replace_all(
+    joined,
+    "vim.lsp.util.make_position_params(opts.winnr)",
+    "vim.lsp.util.make_position_params(opts.winnr, " .. enc .. ")"
+  )
+  joined = replace_all(
+    joined,
+    "vim.lsp.util.make_position_params()",
+    "vim.lsp.util.make_position_params(0, " .. enc .. ")"
+  )
+  joined = replace_all(
+    joined,
+    "vim.lsp.util.jump_to_location(flattened_results[1], offset_encoding)",
+    "vim.lsp.util.show_document(flattened_results[1], offset_encoding, { focus = true })"
+  )
 
-  if new_content ~= joined then
-    pcall(vim.fn.writefile, vim.split(new_content, "\n"), path)
+  if joined ~= original then
+    pcall(vim.fn.writefile, vim.split(joined, "\n"), path)
   end
 end
 

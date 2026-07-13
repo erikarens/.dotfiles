@@ -1,13 +1,28 @@
 -- Highlight, edit, and navigate code
+--
+-- NOTE: nvim-treesitter `main` branch (required for Neovim 0.12+). This is a
+-- full rewrite of the plugin — the old `master`-branch API
+-- (`require("nvim-treesitter.configs").setup{ highlight = {...} }`) is gone.
+-- Highlighting is now Neovim-native (`vim.treesitter.start()`), parsers are
+-- installed via `require("nvim-treesitter").install{}`, and indentation is an
+-- experimental opt-in. main does NOT support lazy-loading.
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPre", "BufNewFile" },
+  branch = "main",
+  lazy = false,
   build = ":TSUpdate",
   dependencies = {
-    "windwp/nvim-ts-autotag",
+    {
+      "windwp/nvim-ts-autotag",
+      opts = {},
+    },
   },
-  opts = {
-    ensure_installed = {
+  config = function()
+    require("nvim-treesitter").setup({})
+
+    -- Parsers to keep installed. Replaces the old `ensure_installed`.
+    -- `install` is async and a no-op for parsers already present.
+    local ensure_installed = {
       "bash",
       "c",
       "html",
@@ -28,35 +43,43 @@ return {
       "yaml",
       "tsx",
       "gitignore",
-    },
-    -- Autoinstall languages that are not installed
-    auto_install = true,
-    highlight = {
-      enable = true,
-      -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-      --  If you are experiencing weird indenting issues, add the language to
-      --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-      additional_vim_regex_highlighting = { "ruby" },
-    },
-    indent = { enable = true, disable = { "ruby" } },
-    autotag = {
-      enable = true,
-    },
-  },
-  config = function(_, opts)
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+    }
+    require("nvim-treesitter").install(ensure_installed)
 
-    -- Prefer git instead of curl in order to improve connectivity in some environments
-    require("nvim-treesitter.install").prefer_git = true
-    ---@diagnostic disable-next-line: missing-fields
-    require("nvim-treesitter.configs").setup(opts)
+    -- Enable treesitter highlighting + (experimental) indentation per buffer.
+    -- Also replicates the old `auto_install`: install a parser on first use of
+    -- a filetype if it's available but not yet installed.
+    local ts_config = require("nvim-treesitter.config")
+    local installed = ts_config.get_installed("parsers")
 
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("user_treesitter_start", { clear = true }),
+      callback = function(ev)
+        local ft = vim.bo[ev.buf].filetype
+        local lang = vim.treesitter.language.get_lang(ft)
+        if not lang then
+          return
+        end
+
+        -- auto_install: fetch a missing-but-available parser, then bail this
+        -- pass (install is async; highlighting starts on the next buffer of
+        -- that filetype).
+        if not vim.tbl_contains(installed, lang) then
+          if vim.tbl_contains(ts_config.get_available(), lang) then
+            require("nvim-treesitter").install({ lang })
+            table.insert(installed, lang)
+          end
+          return
+        end
+
+        -- Neovim-native treesitter highlighting.
+        if not pcall(vim.treesitter.start, ev.buf, lang) then
+          return
+        end
+
+        -- Experimental treesitter-based indentation.
+        vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
+    })
   end,
 }
-
