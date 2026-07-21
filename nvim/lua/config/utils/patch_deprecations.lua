@@ -62,8 +62,56 @@ local function patch_telescope_lsp()
   end
 end
 
+-- Telescope's buffer previewer highlights via the old nvim-treesitter API
+-- (`nvim-treesitter.parsers.ft_to_lang`, `nvim-treesitter.configs`), both gone
+-- on the `main` branch (Nvim 0.12+). Rewrite `treesitter_attach` to use the
+-- Neovim-native treesitter API instead. See [[treesitter-main-build-dep]].
+local function patch_telescope_previewer_ts()
+  local path = vim.fn.stdpath("data") .. "/lazy/telescope.nvim/lua/telescope/previewers/utils.lua"
+  local ok, content = pcall(vim.fn.readfile, path)
+  if not ok or not content or #content == 0 then
+    return
+  end
+  local joined = table.concat(content, "\n")
+  local original = joined
+
+  local old_fn = table.concat({
+    "local treesitter_attach = function(bufnr, ft)",
+    "  local lang = ts_parsers.ft_to_lang(ft)",
+    '  if not ts_configs.is_enabled("highlight", lang, bufnr) then',
+    "    return false",
+    "  end",
+    "",
+    '  local config = ts_configs.get_module "highlight"',
+    "  vim.treesitter.highlighter.new(ts_parsers.get_parser(bufnr, lang))",
+    "  local is_table = type(config.additional_vim_regex_highlighting) == \"table\"",
+    "  if",
+    "    config.additional_vim_regex_highlighting",
+    "    and (not is_table or vim.tbl_contains(config.additional_vim_regex_highlighting, lang))",
+    "  then",
+    '    vim.api.nvim_buf_set_option(bufnr, "syntax", ft)',
+    "  end",
+    "  return true",
+    "end",
+  }, "\n")
+
+  local new_fn = table.concat({
+    "local treesitter_attach = function(bufnr, ft)",
+    "  local lang = (vim.treesitter.language.get_lang and vim.treesitter.language.get_lang(ft)) or ft",
+    "  return (pcall(vim.treesitter.start, bufnr, lang))",
+    "end",
+  }, "\n")
+
+  joined = replace_all(joined, old_fn, new_fn)
+
+  if joined ~= original then
+    pcall(vim.fn.writefile, vim.split(joined, "\n"), path)
+  end
+end
+
 function M.run()
   patch_telescope_lsp()
+  patch_telescope_previewer_ts()
 end
 
 return M
